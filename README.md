@@ -9,3 +9,5 @@ Sequence of commands to be executed to start the simulation:
 2. roslaunch visual_servoing turntable.launch
 3. rosrun visual_servoing 1_CameraFeed.py
 4. rosrun visual_servoing 2_PickPlace.py
+
+For grasping objects package from https://github.com/pal-robotics/gazebo_ros_link_attacher has been implemented. The two Gazebo models are attached with a virtual joint in a generalized grasp hack.
