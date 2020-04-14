@@ -1,0 +1,16 @@
+<launch>
+	<!-- Spawn turntable into Gazebo -->
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find visual_servoing)/robot/tt.urdf.xacro"/>
+	<node name="spawn_tt" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model turntable"/>
+
+	<!-- Launch controller for robot joints -->
+	<rosparam file="$(find visual_servoing)/config/tt_config.yaml" command="load"/>
+
+	<!-- load the controllers -->
+	<node name="tt_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/turntable" args=
+		"joint_state_controller
+		tta_velocity_controller"/>
+
+	<include file="$(find visual_servoing)/launch/objects.launch"/>
+
+</launch>

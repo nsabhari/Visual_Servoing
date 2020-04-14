@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+  <xacro:include filename="$(find visual_servoing)/robot/scara_arm.xacro"/>
+  <xacro:include filename="$(find visual_servoing)/robot/scara.transmission.xacro"/>
+  <xacro:include filename="$(find visual_servoing)/robot/camera.xacro"/>
+
+  <xacro:arg name="robot" default="scara"/>
+  <!-- From scara_arm.xacro -->
+  <xacro:scara_arm arm_id="$(arg robot)"/>
+
+  <!-- From scara.transmission.xacro -->    
+  <xacro:scara_transmission arm_id="$(arg robot)"/>
+  
+  <!-- From camera.xacro -->
+  <!-- <xacro:camera3D pLink="scara_link3" xyz='0.025 0 0.1' rpy='0 -${PI/2} -${PI/2}' /> -->
+  <!-- <xacro:camera3D pLink="scara_link3" xyz='0 0 0.11' rpy='0 -${PI/2} -${PI/2}' /> -->
+  <xacro:camera3D pLink="scara_link2B" xyz='0.04 0 0.03' rpy='${0} -${PI/2+0.269} -${0*PI/2}' />
+
+</robot>

@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+	<xacro:property name="PI" value="3.14159" />
+
+	<xacro:macro name="linkCylinder" params="density rad len xyz:='0 0 0' rpy:='0 0 0'" >
+		<inertial>
+		  <origin xyz="${xyz}" rpy="${rpy}"/>
+		  <mass value="${PI*rad*rad*len*density}" />
+		  <inertia ixx="${PI*rad*rad*len*density*(3.0*rad**3+len**2)/12.0 }" ixy="0.0" ixz="0.0"
+		           iyy="${PI*rad*rad*len*density*(3.0*rad**3+len**2)/12.0 }" iyz="0.0"
+		           izz="${PI*rad*rad*len*density*(3.0*rad**3+len**2)/12.0 }" />
+		</inertial>
+
+		<visual>
+		  <origin xyz="${xyz}" rpy="${rpy}" />
+		  <geometry>
+        <cylinder radius="${rad}" length="${len}"/>
+      </geometry>
+		</visual>
+
+		<collision>
+		  <origin xyz="${xyz}" rpy="${rpy}" />
+		  <geometry>
+		  	<cylinder radius="${rad}" length="${len}" />
+		  </geometry>
+		</collision>
+	</xacro:macro>
+
+	<xacro:macro name="linkSphere" params="density rad xyz:='0 0 0' rpy:='0 0 0'" >
+		<inertial>
+		  <origin xyz="${xyz}" rpy="${rpy}"/>
+		  <mass value="${4/3*PI*rad**3*density}" />
+		  <inertia ixx="${2*4/3*PI*rad**3*density*rad**2/5.0}" ixy="0.0" ixz="0.0"
+		           iyy="${2*4/3*PI*rad**3*density*rad**2/5.0}" iyz="0.0"
+		           izz="${2*4/3*PI*rad**3*density*rad**2/5.0}" />
+		</inertial>
+
+		<visual>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <sphere radius="${rad}" />
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <sphere radius="${rad}" />
+      </geometry>
+    </collision>
+	</xacro:macro>
+
+	<xacro:macro name="linkCube" params="density len xyz:='0 0 0' rpy:='0 0 0'" >
+		<inertial>
+		  <origin xyz="${xyz}" rpy="${rpy}"/>
+		  <mass value="${len**3*density}" />
+		  <inertia ixx="${len**3*density*len**2/6.0}" ixy="0.0" ixz="0.0"
+		           iyy="${len**3*density*len**2/6.0}" iyz="0.0"
+		           izz="${len**3*density*len**2/6.0}" />
+		</inertial>
+
+		<visual>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <box size = "${len} ${len} ${len}" />
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <box size = "${len} ${len} ${len}" />
+      </geometry>
+    </collision>
+	</xacro:macro>
+	
+	<xacro:macro name="linkCuboid" params="density l b h xyz:='0 0 0' rpy:='0 0 0'" >
+		<inertial>
+		  <origin xyz="${xyz}" rpy="${rpy}"/>
+		  <mass value="${l*b*h*density}" />
+		  <inertia ixx="${l*b*h*density*(b*b + h*h)/12.0}" ixy="0.0" ixz="0.0"
+		           iyy="${l*b*h*density*(l*l + h*h)/12.0}" iyz="0.0"
+		           izz="${l*b*h*density*(b*b + l*l)/12.0}" />
+		</inertial>
+
+		<visual>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <box size = "${l} ${b} ${h}" />
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+      <geometry>
+        <box size = "${l} ${b} ${h}" />
+      </geometry>
+    </collision>
+	</xacro:macro>
+</robot>

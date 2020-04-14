@@ -1,0 +1,11 @@
+turntable:
+  # Publish all joint states -----------------------------------
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50  
+
+  # Position Controllers ---------------------------------------
+  tta_velocity_controller:
+    type: effort_controllers/JointVelocityController
+    joint: TT_A_joint
+    pid: {p: 0.005, i: 0.0, d: 0.0}

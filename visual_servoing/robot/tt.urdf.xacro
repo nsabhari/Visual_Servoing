@@ -1,0 +1,67 @@
+<?xml version='1.0'?>
+<!-- Density of Aluminium 2710 kg/m3 -->
+<!-- Density of Plastic 970 kg/m3 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "turntable">
+	<xacro:property name="tt_id" value="TT" />
+	
+	<xacro:include filename="$(find visual_servoing)/robot/links.xacro"/>
+
+	<link name="world"/>
+
+	<!-- Turntable A -->
+	<link name="${tt_id}_A">   
+		<xacro:linkCylinder density="2710" rad="0.1" len= "0.005" xyz="0 0 0.0025" rpy="0 0 0"/>
+	</link>
+	<gazebo reference="${tt_id}_A">
+		<material>Gazebo/White</material>
+		<mu1>1</mu1>
+		<mu2>1</mu2>
+	</gazebo>
+
+	<!-- Turntable B -->
+	<link name="${tt_id}_B">   
+		<xacro:linkCylinder density="2710" rad="0.1" len= "0.005" xyz="0 0 0.0025" rpy="0 0 0"/>
+	</link>
+	<gazebo reference="${tt_id}_B">
+		<material>Gazebo/White</material>
+		<mu1>1</mu1>
+		<mu2>1</mu2>
+	</gazebo>
+
+	<!-- World to Turntable A -->
+	<joint name="${tt_id}_A_joint" type="continuous">
+		<parent link="world"/>
+		<child link="${tt_id}_A"/>
+		<origin xyz="0.2 -0.2 0.0" rpy="0 0 0"/>
+		<limit effort="30.0" velocity="${PI/10}"/> 
+		<axis xyz="0 0 1"/>
+	</joint>
+
+	<!-- World to Turntable B -->
+	<joint name="${tt_id}_B_joint" type="fixed">
+		<parent link="world"/>
+		<child link="${tt_id}_B"/>
+		<origin xyz="0.2 0.2 0.0" rpy="0 0 0"/>
+	</joint>
+
+	<!-- Plugin for the controller -->
+	<gazebo>
+		<plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+			<robotNamespace>/turntable</robotNamespace>
+			<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+			<legacyModeNS>true</legacyModeNS>
+		</plugin>
+	</gazebo>
+
+	<transmission name="${tt_id}_tran">
+		<type>transmission_interface/SimpleTransmission</type>
+		<joint name="${tt_id}_A_joint">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+		</joint>
+		<actuator name="${tt_id}_motor">
+			<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+	</transmission>
+		
+</robot>

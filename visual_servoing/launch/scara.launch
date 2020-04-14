@@ -1,0 +1,41 @@
+<launch>
+
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find visual_servoing)/worlds/environment.world"/>
+		<arg name="paused" value="true"/>
+		<arg name="use_sim_time" value="true"/>
+		<arg name="gui" value="true"/>
+		<arg name="headless" value="false"/>    <!-- Inert - see gazebo_ros_pkgs issue #491 -->
+		<arg name="recording" value="false"/>
+		<arg name="debug" value="false"/>
+	</include>
+
+	<!-- Spawn a robot into Gazebo -->
+	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find visual_servoing)/robot/scara_arm.urdf.xacro"/>
+	<node name="spawn_scara" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model scara
+		-J scara_joint1 0
+		-J scara_joint2 0
+		-J scara_joint3 0
+		-J scara_joint4 0"/>
+
+	<!-- Launch controller for robot joints -->
+	<rosparam file="$(find visual_servoing)/config/scara_config.yaml" command="load"/>
+
+	<!-- load the controllers -->
+	<node name="scara_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/scara" args=
+		"joint_state_controller
+		joint1_position_controller
+		joint2_position_controller
+		joint3_position_controller
+		joint4_position_controller"/>
+
+	<!-- convert joint states to TF transforms -->
+	<node pkg="robot_state_publisher" type="robot_state_publisher" name="rob_st_pub" respawn="false" output="screen" >
+		<remap from="/joint_states" to="/scara/joint_states" />
+	</node>
+
+	<node pkg="tf" type="static_transform_publisher" name="cam_to_optical" args="0 0 0 0.5 -0.5 0.5 -0.5 camera frameCamera 100" />
+
+	<!-- Launch the services for scara -->
+	<node pkg="visual_servoing" type="services.py" name="scara_services" output="screen" />
+</launch>

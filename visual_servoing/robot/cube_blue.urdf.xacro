@@ -1,0 +1,18 @@
+<?xml version='1.0'?>
+<!-- Density of Aluminium 2710 kg/m3 -->
+<!-- Density of Plastic 970 kg/m3 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "cube_blue">
+	<xacro:include filename="$(find visual_servoing)/robot/links.xacro"/> 
+	
+	<link name="cube_blue">   
+		<xacro:linkCuboid density="970" l="0.03" b="0.03" h="0.02" xyz="0 0 0.01" rpy="0 0 0"/>
+	</link>
+	<gazebo reference="cube_blue">
+		<material>Gazebo/Blue</material>
+		<mu1>1</mu1>
+		<mu2>1</mu2>
+		<maxVel>0</maxVel>
+		<minDepth>0.01</minDepth>
+	</gazebo>
+	
+</robot>

@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="scara_transmission" params="arm_id">
+
+  	<!-- Plugin for the controller -->
+  	<gazebo>
+      <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
+        <robotNamespace>/scara</robotNamespace>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <!-- <robotParam>robot_description</robotParam> -->
+        <legacyModeNS>true</legacyModeNS>
+      </plugin>
+  	</gazebo>
+
+  	<transmission name="${arm_id}_tran_1">
+	    <type>transmission_interface/SimpleTransmission</type>
+	    <joint name="${arm_id}_joint1">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	    </joint>
+	    <actuator name="${arm_id}_motor1">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	      <mechanicalReduction>1</mechanicalReduction>
+	    </actuator>
+	  </transmission>
+
+	  <transmission name="${arm_id}_tran_2">
+	    <type>transmission_interface/SimpleTransmission</type>
+	    <joint name="${arm_id}_joint2">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	    </joint>
+	    <actuator name="${arm_id}_motor2">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	      <mechanicalReduction>1</mechanicalReduction>
+	    </actuator>
+	  </transmission>
+
+	  <transmission name="${arm_id}_tran_3">
+	    <type>transmission_interface/SimpleTransmission</type>
+	    <joint name="${arm_id}_joint3">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	    </joint>
+	    <actuator name="${arm_id}_motor3">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	      <mechanicalReduction>1</mechanicalReduction>
+	    </actuator>
+	  </transmission>
+
+	  <transmission name="${arm_id}_tran_4">
+	    <type>transmission_interface/SimpleTransmission</type>
+	    <joint name="${arm_id}_joint4">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	    </joint>
+	    <actuator name="${arm_id}_motor4">
+	      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	      <mechanicalReduction>1</mechanicalReduction>
+	    </actuator>
+	  </transmission>
+
+  </xacro:macro>
+</robot>

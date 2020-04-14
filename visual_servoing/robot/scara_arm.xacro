@@ -1,0 +1,147 @@
+<?xml version='1.0'?>
+<!-- Density of Aluminium 2710 kg/m3 -->
+<!-- Density of Plastic 970 kg/m3 -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "scara">
+	<xacro:include filename="$(find visual_servoing)/robot/links.xacro"/>
+	
+	<xacro:macro name="scara_arm" params="arm_id:='scara' connected_to:='' c_xyz='0 0 0' c_rpy=:='000'">
+		
+		<xacro:unless value="${not connected_to}">
+			<joint name="${arm_id}_joint_${connected_to}" type="fixed">
+				<parent link="${connected_to}"/>
+				<child link="${arm_id}_link0"/>
+				<origin rpy="${c_rpy}" xyz="${c_xyz}"/>
+			</joint>
+		</xacro:unless>
+
+		<link name="world"/>
+
+		<!-- Robot Base -->
+		<link name="${arm_id}_link0">   
+			<xacro:linkCylinder density="2710" rad="0.05" len= "0.05" xyz="0 0 0.025" rpy="0 0 0"/>
+		</link>
+		<gazebo reference="${arm_id}_link0">
+			<material>Gazebo/Red</material>
+		</gazebo>
+
+		<!-- Link 1 : Revolute Joint -->
+		<link name = "${arm_id}_link1">
+			<xacro:linkCylinder density="2710" rad="0.03" len= "0.15" xyz="0 0 0.075" rpy="0 0 0"/>
+		</link>
+		<gazebo reference="${arm_id}_link1">
+			<material>Gazebo/Green</material>
+		</gazebo>
+
+		<!-- Dummy link for smooth visual -->
+		<link name = "${arm_id}_link1B">
+			<xacro:linkSphere density="970" rad="0.03" xyz="0 0 0" rpy="0 0 0"/>
+		</link>
+
+		<!-- Link 1 continuation -->
+		<link name = "${arm_id}_link1C">
+			<xacro:linkCylinder density="2710" rad="0.03" len= "0.2" xyz="0.1 0 0" rpy="0 ${PI/2} 0"/>
+		</link>
+
+		<!-- Dummy link for different color -->
+		<link name = "${arm_id}_link1D">
+			<xacro:linkCylinder density="970" rad="0.04" len= "0.07" xyz="0 0 0" rpy="0 0 0"/>
+		</link>
+
+		<!-- Link 2 : Revolute Joint -->
+		<link name = "${arm_id}_link2">
+			<xacro:linkCylinder density="2710" rad="0.02" len= "0.2" xyz="0.1 0 0" rpy="0 ${PI/2} 0"/>
+		</link>
+		<gazebo reference="${arm_id}_link2">
+			<material>Gazebo/Green</material>
+		</gazebo>
+
+		<!-- Dummy link for different color -->
+		<link name = "${arm_id}_link2B">
+			<xacro:linkCube density="970" len= "0.06" xyz="0 0 0" rpy="0 0 0"/>
+		</link>
+
+		<!-- Link 3 : Prismatic Joint -->
+		<link name = "${arm_id}_link3">
+			<xacro:linkCylinder density="2710" rad="0.01" len= "0.2" xyz="0 0 0" rpy="0 0 0"/>
+		</link>
+		<gazebo reference="${arm_id}_link3">
+			<material>Gazebo/Orange</material>
+		</gazebo>
+
+		<!-- Link 4 : Revolute Joint -->
+		<link name = "${arm_id}_link4">
+			<xacro:linkCylinder density="2710" rad="0.012" len= "0.01" xyz="0 0 -0.005" rpy="0 0 0"/>
+		</link>
+		<gazebo reference="${arm_id}_link4">
+			<material>Gazebo/Purple</material>
+		</gazebo>
+
+		<!-- World to Robot Base -->
+		<joint name="${arm_id}_to_world" type="fixed">
+			<parent link="world"/>
+			<child link="${arm_id}_link0"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+		</joint>
+
+		<!-- Robot Base to Link 1 -->
+		<joint name="${arm_id}_joint1" type="revolute">
+			<parent link="${arm_id}_link0"/>
+			<child link="${arm_id}_link1"/>
+			<origin xyz="0 0 0.05" rpy="0 0 0"/>
+			<limit effort="30.0" lower="-${PI}" upper="${PI}" velocity="5.0"/> 
+			<axis xyz="0 0 1"/>
+		</joint>
+
+		<joint name="${arm_id}_joint1B" type="fixed">
+			<parent link="${arm_id}_link1"/>
+			<child link="${arm_id}_link1B"/>
+			<origin xyz="0 0 0.15" rpy="0 0 0"/>
+		</joint>
+
+		<joint name="${arm_id}_joint1C" type="fixed">
+			<parent link="${arm_id}_link1B"/>
+			<child link="${arm_id}_link1C"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+		</joint>
+
+		<joint name="${arm_id}_joint1D" type="fixed">  
+			<parent link="${arm_id}_link1C"/>
+			<child link="${arm_id}_link1D"/>
+			<origin xyz="0.2 0 0" rpy="0 0 0"/>
+		</joint>
+
+		<!-- Link 1 to Link 2 -->
+		<joint name="${arm_id}_joint2" type="revolute">
+			<parent link="${arm_id}_link1D"/>
+			<child link="${arm_id}_link2"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit effort="30.0" lower="-${PI}" upper="${PI}" velocity="5.0"/> 
+			<axis xyz="0 0 1"/>
+		</joint>
+
+		<joint name="${arm_id}_joint2B" type="fixed">
+			<parent link="${arm_id}_link2"/>
+			<child link="${arm_id}_link2B"/>
+			<origin xyz="0.2 0 0" rpy="${PI} 0 0"/>
+		</joint>
+
+		<!-- Link 2 to Link 3 -->
+		<joint name="${arm_id}_joint3" type="prismatic">
+			<parent link="${arm_id}_link2B"/>
+			<child link="${arm_id}_link3"/>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<limit effort="30.0" lower="-0.06" upper="0.08" velocity="5.0"/> 
+			<axis xyz="0 0 1"/>
+		</joint>
+
+		<!-- Link 3 to Link 4 -->
+		<joint name="${arm_id}_joint4" type="revolute">
+			<parent link="${arm_id}_link3"/>
+			<child link="${arm_id}_link4"/>
+			<origin xyz="0 0 0.11" rpy="0 0 0"/>
+			<limit effort="10.0" lower="${-PI}" upper="${PI}" velocity="1.0"/> 
+			<axis xyz="0 0 1"/>
+		</joint>
+
+	</xacro:macro>
+</robot>

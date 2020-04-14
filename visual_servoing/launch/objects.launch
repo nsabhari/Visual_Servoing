@@ -1,0 +1,20 @@
+<launch>
+  <!-- Spawning a cubes into Gazebo -->
+  <group ns="cube_red">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find visual_servoing)/robot/cube_red.urdf.xacro"/>
+    <node name="spawn" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf 
+    	-x 0.2 -y -0.25 -z 0.005 -model cube_red"/>
+  </group>
+
+  <group ns="cube_green">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find visual_servoing)/robot/cube_green.urdf.xacro"/>
+    <node name="spawn" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf 
+    	-x 0.1567 -y -0.175 -z 0.005 -model cube_green"/>
+  </group>
+
+  <group ns="cube_blue">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find visual_servoing)/robot/cube_blue.urdf.xacro"/>
+    <node name="spawn" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf 
+    	-x 0.2433 -y -0.175 -z 0.005 -model cube_blue"/>
+  </group>
+</launch>

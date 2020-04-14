@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="scara">
+	<xacro:property name="camera_name" value="scaraCam" />
+
+	<xacro:macro name="camera3D" params="pLink:='scara_link2B' xyz:='0 0 0' rpy:='0 0 0'">
+		<!-- Camera -->
+	  <link name="camera">
+	    <xacro:linkCylinder density="1" rad="0.01" len= "0.01" xyz="-0.005 0 0" rpy="0 ${PI/2} 0"/>
+	  </link>
+
+	  <joint name="camera_joint" type="fixed">
+    	<origin xyz="${xyz}" rpy="${rpy}"/>
+    	<parent link="${pLink}"/>
+    	<child link="camera"/>
+  	</joint>
+
+    <gazebo reference="camera_joint">
+      <disableFixedJointLumping>true</disableFixedJointLumping> 
+    </gazebo>
+
+  	<gazebo reference="camera">
+      <material>Gazebo/Yellow</material>
+  		<sensor name="camera" type="depth">
+        <update_rate>10</update_rate>
+        <camera>
+          <horizontal_fov>1.047198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>B8G8R8</format>
+          </image>
+          <clip>
+            <near>0.0002</near>
+            <far>3</far>
+          </clip>
+        </camera>
+        <plugin name="camera_plugin" filename="libgazebo_ros_openni_kinect.so">
+          <baseline>0.2</baseline>
+          <alwaysOn>true</alwaysOn>
+          <!-- Keep this zero, update_rate in the parent <sensor> tag
+            will control the frame rate. -->
+          <updateRate>0.0</updateRate>
+          <cameraName>${camera_name}</cameraName>
+          <imageTopicName>/${camera_name}/color/image_raw</imageTopicName>
+          <cameraInfoTopicName>/${camera_name}/color/camera_info</cameraInfoTopicName>
+          <!-- <depthImageTopicName>/${camera_name}/depth/image_raw</depthImageTopicName> -->
+          <!-- <depthImageCameraInfoTopicName>/${camera_name}/depth/camera_info</depthImageCameraInfoTopicName> -->
+          <!-- <pointCloudTopicName>/${camera_name}/depth/points</pointCloudTopicName> -->
+          <frameName>frameCamera</frameName>
+          <!-- <pointCloudCutoff>0.02</pointCloudCutoff> -->
+          <!-- <pointCloudCutoffMax>1.5</pointCloudCutoffMax> -->
+          <distortionK1>0</distortionK1>
+          <distortionK2>0</distortionK2>
+          <distortionK3>0</distortionK3>
+          <distortionT1>0</distortionT1>
+          <distortionT2>0</distortionT2>
+          <CxPrime>0</CxPrime>
+          <Cx>0</Cx>
+          <Cy>0</Cy>
+          <focalLength>0</focalLength>
+          <hackBaseline>0</hackBaseline>
+        </plugin>
+      </sensor>
+		</gazebo>
+	</xacro:macro>
+</robot>
