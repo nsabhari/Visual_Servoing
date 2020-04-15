@@ -41,7 +41,7 @@ class scaraCam:
 		if self.flagRecord == 0 and data.data == 1:
 			now = datetime.now()
 			dt_string = now.strftime("%Y_%m_%d_%H_%M_%S")
-			fileName = dt_string + "_scara_vs.avi"
+			fileName = dt_string + "_scara_vs.mp4"
 			fourcc = cv2.VideoWriter_fourcc('D','I','V','X')
 			self.out = cv2.VideoWriter(fileName,fourcc, 10.0, (640,480))
 			self.flagRecord = 1

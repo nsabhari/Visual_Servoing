@@ -57,7 +57,7 @@ if __name__ == '__main__':
 	unpause()			# Unpausing the gazebo physics
 	time.sleep(1)
 
-	pubRecord.publish(1); time.sleep(2)
+	# pubRecord.publish(1); time.sleep(2)
 
 	SetPoint(homePos,0,1)
 	
@@ -75,5 +75,4 @@ if __name__ == '__main__':
 		SetPoint(placePos[i],1,0.75)	# Move up
 
 	SetPoint(homePos,0,1)
-	time.sleep(2)
-	pubRecord.publish(0) 
+	# time.sleep(2); pubRecord.publish(0) 
