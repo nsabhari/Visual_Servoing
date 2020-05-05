@@ -33,7 +33,7 @@
 		<parent link="world"/>
 		<child link="${tt_id}_A"/>
 		<origin xyz="0.2 -0.2 0.0" rpy="0 0 0"/>
-		<limit effort="30.0" velocity="${PI/10}"/> 
+		<limit effort="30.0" velocity="${PI/5}"/> 
 		<axis xyz="0 0 1"/>
 	</joint>
 

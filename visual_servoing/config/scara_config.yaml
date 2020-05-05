@@ -18,7 +18,7 @@ scara:
   joint3_position_controller:
     type: effort_controllers/JointPositionController
     joint: scara_joint3
-    pid: {p: 1000.0, i: 0.00, d: 100.0}
+    pid: {p: 3000.0, i: 0.00, d: 100.0}
 
   joint4_position_controller:
     type: effort_controllers/JointPositionController

@@ -4,7 +4,7 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name = "scara">
 	<xacro:include filename="$(find visual_servoing)/robot/links.xacro"/>
 	
-	<xacro:macro name="scara_arm" params="arm_id:='scara' connected_to:='' c_xyz='0 0 0' c_rpy=:='000'">
+	<xacro:macro name="scara_arm" params="arm_id:='scara' connected_to:='' c_xyz='0 0 0' c_rpy=:='0 0 0'">
 		
 		<xacro:unless value="${not connected_to}">
 			<joint name="${arm_id}_joint_${connected_to}" type="fixed">
@@ -62,7 +62,7 @@
 
 		<!-- Link 3 : Prismatic Joint -->
 		<link name = "${arm_id}_link3">
-			<xacro:linkCylinder density="2710" rad="0.01" len= "0.2" xyz="0 0 0" rpy="0 0 0"/>
+			<xacro:linkCylinder density="${4*2710}" rad="${0.01/2}" len= "0.2" xyz="0 0 0" rpy="0 0 0"/>
 		</link>
 		<gazebo reference="${arm_id}_link3">
 			<material>Gazebo/Orange</material>
@@ -70,7 +70,7 @@
 
 		<!-- Link 4 : Revolute Joint -->
 		<link name = "${arm_id}_link4">
-			<xacro:linkCylinder density="2710" rad="0.012" len= "0.01" xyz="0 0 -0.005" rpy="0 0 0"/>
+			<xacro:linkCylinder density="${4*2710}" rad="${0.012/2}" len= "0.01" xyz="0 0 -0.005" rpy="0 0 0"/>
 		</link>
 		<gazebo reference="${arm_id}_link4">
 			<material>Gazebo/Purple</material>
